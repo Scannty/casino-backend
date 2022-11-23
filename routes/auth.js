@@ -31,4 +31,6 @@ router.post(
     authController.postSignup
 )
 
+router.post('/login', authController.postLogin)
+
 module.exports = router
