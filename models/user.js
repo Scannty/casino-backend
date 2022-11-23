@@ -1,3 +1,4 @@
+const { ObjectId } = require('mongodb')
 const { getDb } = require('../utils/database')
 
 class User {
@@ -11,6 +12,18 @@ class User {
     save() {
         const db = getDb()
         return db.collection('users').insertOne(this)
+    }
+
+    updateBalance(newBalance) {
+        const db = getDb()
+        return db
+            .collection('users')
+            .updateOne({ email: this.email }, { $set: { balance: newBalance } })
+    }
+
+    static findById(userId) {
+        const db = getDb()
+        return db.collection('users').find({ _id: new ObjectId(userId) }).next()
     }
 
     static findByEmail(email) {
