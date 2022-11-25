@@ -59,7 +59,7 @@ exports.postLogin = async (req, res, next) => {
             process.env.SECRET_KEY,
             { expiresIn: '1h' }
         )
-        res.status(200).json({ token })
+        res.status(200).json({ token, balance: user.balance })
     } catch (err) {
         next(err)
     }

@@ -4,6 +4,7 @@ const cors = require('cors')
 const { connectMongo } = require('./utils/database')
 const authRoutes = require('./routes/auth')
 const rouletteRoutes = require('./routes/roulette')
+const web3Routes = require('./controllers/web3')
 
 const app = express()
 
@@ -20,6 +21,7 @@ app.use((req, res, next) => {
 
 app.use('/auth', authRoutes)
 app.use('/roulette', rouletteRoutes)
+app.use(web3Routes)
 
 app.use((error, req, res, next) => {
     console.log('Aleksa je car')

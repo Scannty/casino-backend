@@ -14,11 +14,11 @@ class User {
         return db.collection('users').insertOne(this)
     }
 
-    updateBalance(newBalance) {
+    static updateBalanceById(userId, newBalance) {
         const db = getDb()
         return db
             .collection('users')
-            .updateOne({ email: this.email }, { $set: { balance: newBalance } })
+            .updateOne({ _id: new ObjectId(userId) }, { $set: { balance: newBalance } })
     }
 
     static findById(userId) {
