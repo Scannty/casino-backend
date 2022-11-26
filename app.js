@@ -4,11 +4,12 @@ const cors = require('cors')
 const { connectMongo } = require('./utils/database')
 const authRoutes = require('./routes/auth')
 const rouletteRoutes = require('./routes/roulette')
-const web3Routes = require('./controllers/web3')
+const web3Routes = require('./routes/web3')
 
 const app = express()
 
 app.use(cors())
+app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json())
 
 app.use((req, res, next) => {

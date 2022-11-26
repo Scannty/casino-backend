@@ -2,7 +2,8 @@ const jwt = require('jsonwebtoken')
 require('dotenv').config()
 
 module.exports = (req, res, next) => {
-    const token = req.get('Authorization')
+    const tokenString = req.get('Authorization')
+    const token = tokenString.split(' ')[1]
     if (!token) {
         const error = new Error('No authorization token provided.')
         error.statusCode = 401
