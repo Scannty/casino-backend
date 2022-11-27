@@ -32,10 +32,11 @@ exports.postSpin = async (req, res, next) => {
     console.log(winAmount, totalStakeChips, netWin, selectedNumber, user.balance)
 
     const newUserBalance = user.balance + (netWin * CHIP_SIZE)
+    console.log(newUserBalance)
 
     // Update user balance according to win amount
     try {
-        const result = await User.updateBalanceById(newUserBalance)
+        const result = await User.updateBalanceById(userId, newUserBalance)
         console.log(result)
         res.status(200).json({
             message: 'Roulette ended successfully!',
