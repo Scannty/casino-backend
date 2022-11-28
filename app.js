@@ -1,7 +1,9 @@
+const CoinGecko = require('coingecko-api')
 const express = require('express')
 const bodyparser = require('body-parser')
 const cors = require('cors')
 const { connectMongo } = require('./utils/database')
+const { initIo } = require('./utils/socket')
 const authRoutes = require('./routes/auth')
 const rouletteRoutes = require('./routes/roulette')
 const web3Routes = require('./routes/web3')
@@ -31,5 +33,18 @@ app.use((error, req, res, next) => {
 })
 
 connectMongo(() => {
-    app.listen(8000, () => console.log('Server started...'))
+    const server = app.listen(8000, () => console.log('Server started...'))
+    const io = initIo(server)
+    io.on('connection', socket => {
+        console.log('Client connected to socket...')
+        const CoinGeckoClient = new CoinGecko()
+        setInterval(() => {
+            CoinGeckoClient.simple
+                .price({
+                    ids: ['bitcoin', 'ethereum'],
+                    vs_currencies: ['eur', 'usd'],
+                })
+                .then(data => socket.emit('priceUpdate', { prices: data.data }))
+        }, 10000)
+    })
 })
