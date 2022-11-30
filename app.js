@@ -38,7 +38,7 @@ connectMongo(() => {
     io.on('connection', socket => {
         console.log('Client connected to socket...')
         const CoinGeckoClient = new CoinGecko()
-        setInterval(() => {
+        setTimeout(() => {
             CoinGeckoClient.simple
                 .price({
                     ids: ['bitcoin', 'ethereum'],
