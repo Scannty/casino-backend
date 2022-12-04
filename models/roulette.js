@@ -4,7 +4,6 @@ const BLACK_NUMBERS = [2, 4, 6, 8, 10, 11, 13, 15, 17, 20, 22, 24, 26, 28, 29, 3
 
 class Roulette {
     constructor(fields) {
-        console.log(fields)
         this.selectedNumbers = fields.selectedNumbers.map(number => number.value)
         this.selectedRows = fields.selectedRows.map(row => row.value)
         this.selectedThirds = fields.selectedThirds.map(third => third.value)
@@ -28,11 +27,6 @@ class Roulette {
 
         const winAmountNumbers = this.selectedNumbers.find((num, index) => index === randomNumber) * 36
         /* const winAmountNumbersHalf = this.selectedNumbersHalf.find((num, index) => index === randomNumber) * 18 */
-        console.log(winAmountNumbers)
-
-        console.log(this.selectedRows, randomRow)
-        console.log(this.selectedThirds, randomThird)
-        console.log(this.selectedHalves, randomHalf)
 
         const winAmountRows = this.selectedRows[randomRow] * 3
         const winAmountThirds = this.selectedThirds[randomThird] * 3
@@ -53,7 +47,6 @@ class Roulette {
         }
 
         const netWin = winAmount - this.totalStakeChips
-        console.log(winAmount, this.totalStakeChips, netWin)
         return { winAmount, totalStakeChips: this.totalStakeChips, netWin }
     }
 
@@ -61,7 +54,6 @@ class Roulette {
         const db = getDb()
 
         const randomNumber = Math.floor(Math.random() * 37)
-        console.log(randomNumber)
 
         let randomRow
         if (randomNumber % 3 === 0) {
@@ -92,13 +84,6 @@ class Roulette {
 
         const randomBlack = BLACK_NUMBERS.includes(randomNumber)
         const color = randomBlack ? 'black' : 'red'
-        console.log(
-            randomRow,
-            randomThird,
-            randomHalf,
-            randomEven,
-            color
-        )
         await db.collection('roulette').insertOne({ number: randomNumber, color })
         const { winAmount, totalStakeChips, netWin } = this.calculateWinAmount(
             randomNumber,
@@ -108,7 +93,6 @@ class Roulette {
             randomEven,
             randomBlack
         )
-        console.log(winAmount, netWin)
         return { randomNumber, winAmount, netWin, totalStakeChips }
     }
 

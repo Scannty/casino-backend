@@ -1,8 +1,8 @@
 const { validationResult } = require('express-validator')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-require('dotenv').config()
 const User = require('../models/user')
+require('dotenv').config()
 
 exports.postSignup = async (req, res, next) => {
     const { username, email, password, confirmPassword } = req.body

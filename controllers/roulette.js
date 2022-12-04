@@ -1,3 +1,4 @@
+const { getIo } = require('../utils/socket')
 const User = require('../models/user')
 const Roulette = require('../models/roulette')
 
@@ -28,16 +29,13 @@ exports.postSpin = async (req, res, next) => {
     const roulette = new Roulette(req.body)
     const { randomNumber: selectedNumber, winAmount, netWin, totalStakeChips } = await roulette.spin()
 
-    console.log('hey')
-    console.log(winAmount, totalStakeChips, netWin, selectedNumber, user.balance)
-
     const newUserBalance = user.balance + (netWin * CHIP_SIZE)
-    console.log(newUserBalance)
 
     // Update user balance according to win amount
     try {
         const result = await User.updateBalanceById(userId, newUserBalance)
-        console.log(result)
+        const io = getIo()
+        io.emit('balanceChange', { balance: newUserBalance })
         res.status(200).json({
             message: 'Roulette ended successfully!',
             selectedNumber,
